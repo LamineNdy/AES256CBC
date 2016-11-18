@@ -27,9 +27,10 @@ final public class AES256CBC {
             let key = password
 
             do {
-                let encryptedString = try aesEncrypt(str, key: key, iv: iv)
-                let ret = iv + encryptedString
-                return ret
+              
+              let ret = iv + str
+              let encryptedString = try aesEncrypt(ret, key: key, iv: iv)
+              return encryptedString
             } catch let err as NSError {
                 NSLog(err.localizedDescription)
             }
@@ -44,18 +45,19 @@ final public class AES256CBC {
             // get AES initialization vector from first 16 chars
             let ivRange = str.startIndex..<str.index(str.startIndex, offsetBy: 16)
             let iv = str.substring(with: ivRange)
-            let encryptedString = str.replacingOccurrences(of: iv, with: "",
-                                                           options: String.CompareOptions.literal, range: nil) // remove IV
+//            let encryptedString = str.replacingOccurrences(of: iv, with: "",
+//                                                           options: String.CompareOptions.literal, range: nil) // remove IV
 
             do {
-                let decryptedString = try aesDecrypt(encryptedString, key: password, iv: iv)
-                return decryptedString
+                let decryptedString = try aesDecrypt(str, key: password, iv: iv)
+                return decryptedString.replacingOccurrences(of: "\0", with: "")
             } catch let err as NSError {
                 NSLog(err.localizedDescription)
             }
         }
         return nil
     }
+
 
     /// returns random string (uppercase & lowercase, no spaces) of 32 characters length
     /// which can be used as SHA-256 compatbile password
@@ -120,7 +122,6 @@ final public class AES256CBC {
     fileprivate class func aesDecrypt(_ str: String, key: String, iv: String) throws -> String {
         let keyData = key.data(using: String.Encoding.utf8)!
         let ivData = iv.data(using: String.Encoding.utf8)!
-        //let data = Data(base64Encoded: str, options: NSData.Base64DecodingOptions(rawValue: 0))!
         let data = Data(base64Encoded: str)!
         let dec = try Data(bytes: AESCipher(key: keyData.bytes,
                                             iv: ivData.bytes).decrypt(bytes: data.bytes))
@@ -256,7 +257,7 @@ final private class AESCipher {
      */
 
     func encrypt(bytes: [UInt8]) throws -> [UInt8] {
-        let finalBytes = PKCS7().add(bytes: bytes, blockSize: AESCipher.blockSize)
+        let finalBytes = PKCS7().add(to: bytes, blockSize: AESCipher.blockSize)
         let blocks = finalBytes.chunks(size: AESCipher.blockSize)
         return try blockMode.encrypt(blocks: blocks, iv: self.iv, cipherOperation: encrypt)
     }
@@ -331,7 +332,7 @@ final private class AESCipher {
         }
 
         let blocks = bytes.chunks(size: AESCipher.blockSize)
-        return try PKCS7().remove(bytes: blockMode.decrypt(blocks: blocks, iv: self.iv, cipherOperation: decrypt), blockSize: AESCipher.blockSize)
+        return try PKCS7().remove(from: blockMode.decrypt(blocks: blocks, iv: self.iv, cipherOperation: decrypt), blockSize: AESCipher.blockSize)
     }
 
     private func decrypt(block: [UInt8]) -> [UInt8]? {
@@ -616,45 +617,8 @@ private struct CBCBlockMode {
     }
 }
 
-// MARK: - Padding
 
-private struct PKCS7 {
 
-    init() {
-    }
-
-    func add(bytes: [UInt8], blockSize: Int) -> [UInt8] {
-        let padding = UInt8(blockSize - (bytes.count % blockSize))
-        var withPadding = bytes
-        if padding == 0 {
-            // If the original data is a multiple of N bytes, then an extra block of bytes with value N is added.
-            for _ in 0..<blockSize {
-                withPadding.append(contentsOf: [UInt8(blockSize)])
-            }
-        } else {
-            // The value of each added byte is the number of bytes that are added
-            for _ in 0..<padding {
-                withPadding.append(contentsOf: [UInt8(padding)])
-            }
-        }
-        return withPadding
-    }
-
-    func remove(bytes: [UInt8], blockSize: Int?) -> [UInt8] {
-        let lastByte = bytes.last!
-        let padding = Int(lastByte) // last byte
-        let finalLength = bytes.count - padding
-
-        if finalLength < 0 {
-            return bytes
-        }
-
-        if padding >= 1 {
-            return Array(bytes[0..<finalLength])
-        }
-        return bytes
-    }
-}
 
 // MARK: - Utils
 

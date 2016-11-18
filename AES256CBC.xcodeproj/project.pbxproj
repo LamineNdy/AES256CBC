@@ -16,6 +16,26 @@
 		AC3AC2E61CA1B10100BBFC58 /* AES256CBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7D2A861C6A126A0089227F /* AES256CBC.swift */; };
 		AC3AC2E71CA1B10100BBFC58 /* AES256CBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7D2A861C6A126A0089227F /* AES256CBC.swift */; };
 		AC3AC2E81CA1B10200BBFC58 /* AES256CBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7D2A861C6A126A0089227F /* AES256CBC.swift */; };
+		E785A2501DDFC53C00577B57 /* ZeroPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A24F1DDFC53C00577B57 /* ZeroPadding.swift */; };
+		E785A2521DDFC59A00577B57 /* PKCS7.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2511DDFC59A00577B57 /* PKCS7.swift */; };
+		E785A2541DDFC5B400577B57 /* NoPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2531DDFC5B400577B57 /* NoPadding.swift */; };
+		E785A2561DDFC6C200577B57 /* ZeroPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A24F1DDFC53C00577B57 /* ZeroPadding.swift */; };
+		E785A2571DDFC6C300577B57 /* ZeroPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A24F1DDFC53C00577B57 /* ZeroPadding.swift */; };
+		E785A2581DDFC6C500577B57 /* ZeroPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A24F1DDFC53C00577B57 /* ZeroPadding.swift */; };
+		E785A2591DDFC6C500577B57 /* ZeroPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A24F1DDFC53C00577B57 /* ZeroPadding.swift */; };
+		E785A25A1DDFC6D200577B57 /* PKCS7.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2511DDFC59A00577B57 /* PKCS7.swift */; };
+		E785A25B1DDFC6D300577B57 /* PKCS7.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2511DDFC59A00577B57 /* PKCS7.swift */; };
+		E785A25C1DDFC6D400577B57 /* PKCS7.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2511DDFC59A00577B57 /* PKCS7.swift */; };
+		E785A25D1DDFC6D400577B57 /* PKCS7.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2511DDFC59A00577B57 /* PKCS7.swift */; };
+		E785A25E1DDFC6D800577B57 /* NoPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2531DDFC5B400577B57 /* NoPadding.swift */; };
+		E785A25F1DDFC6D900577B57 /* NoPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2531DDFC5B400577B57 /* NoPadding.swift */; };
+		E785A2601DDFC6D900577B57 /* NoPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2531DDFC5B400577B57 /* NoPadding.swift */; };
+		E785A2611DDFC6DA00577B57 /* NoPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2531DDFC5B400577B57 /* NoPadding.swift */; };
+		E785A2631DDFC72300577B57 /* Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2621DDFC72300577B57 /* Padding.swift */; };
+		E785A2641DDFC72300577B57 /* Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2621DDFC72300577B57 /* Padding.swift */; };
+		E785A2651DDFC72300577B57 /* Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2621DDFC72300577B57 /* Padding.swift */; };
+		E785A2661DDFC72300577B57 /* Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2621DDFC72300577B57 /* Padding.swift */; };
+		E785A2671DDFC72300577B57 /* Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785A2621DDFC72300577B57 /* Padding.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +62,10 @@
 		AC3AC2751CA1AB5D00BBFC58 /* AES256CBC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AES256CBC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC3AC2821CA1ABC200BBFC58 /* AES256CBC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AES256CBC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC3AC28F1CA1AC3900BBFC58 /* AES256CBC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AES256CBC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E785A24F1DDFC53C00577B57 /* ZeroPadding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZeroPadding.swift; sourceTree = "<group>"; };
+		E785A2511DDFC59A00577B57 /* PKCS7.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PKCS7.swift; sourceTree = "<group>"; };
+		E785A2531DDFC5B400577B57 /* NoPadding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoPadding.swift; sourceTree = "<group>"; };
+		E785A2621DDFC72300577B57 /* Padding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Padding.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +156,10 @@
 			isa = PBXGroup;
 			children = (
 				9E7D2A861C6A126A0089227F /* AES256CBC.swift */,
+				E785A24F1DDFC53C00577B57 /* ZeroPadding.swift */,
+				E785A2511DDFC59A00577B57 /* PKCS7.swift */,
+				E785A2531DDFC5B400577B57 /* NoPadding.swift */,
+				E785A2621DDFC72300577B57 /* Padding.swift */,
 			);
 			name = sources;
 			sourceTree = "<group>";
@@ -375,7 +403,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E785A2521DDFC59A00577B57 /* PKCS7.swift in Sources */,
+				E785A2631DDFC72300577B57 /* Padding.swift in Sources */,
 				9E7D2A871C6A126A0089227F /* AES256CBC.swift in Sources */,
+				E785A2541DDFC5B400577B57 /* NoPadding.swift in Sources */,
+				E785A2501DDFC53C00577B57 /* ZeroPadding.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,8 +415,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E785A2561DDFC6C200577B57 /* ZeroPadding.swift in Sources */,
 				7507996A1D9B1A00001A3FF7 /* AES256CBCTests.swift in Sources */,
+				E785A25A1DDFC6D200577B57 /* PKCS7.swift in Sources */,
+				E785A25E1DDFC6D800577B57 /* NoPadding.swift in Sources */,
 				9E7D2A881C6A126A0089227F /* AES256CBC.swift in Sources */,
+				E785A2641DDFC72300577B57 /* Padding.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,7 +428,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E785A25B1DDFC6D300577B57 /* PKCS7.swift in Sources */,
+				E785A2651DDFC72300577B57 /* Padding.swift in Sources */,
 				AC3AC2E61CA1B10100BBFC58 /* AES256CBC.swift in Sources */,
+				E785A25F1DDFC6D900577B57 /* NoPadding.swift in Sources */,
+				E785A2571DDFC6C300577B57 /* ZeroPadding.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,7 +440,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E785A25C1DDFC6D400577B57 /* PKCS7.swift in Sources */,
+				E785A2661DDFC72300577B57 /* Padding.swift in Sources */,
 				AC3AC2E71CA1B10100BBFC58 /* AES256CBC.swift in Sources */,
+				E785A2611DDFC6DA00577B57 /* NoPadding.swift in Sources */,
+				E785A2581DDFC6C500577B57 /* ZeroPadding.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,7 +452,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E785A25D1DDFC6D400577B57 /* PKCS7.swift in Sources */,
+				E785A2671DDFC72300577B57 /* Padding.swift in Sources */,
 				AC3AC2E81CA1B10200BBFC58 /* AES256CBC.swift in Sources */,
+				E785A2601DDFC6D900577B57 /* NoPadding.swift in Sources */,
+				E785A2591DDFC6C500577B57 /* ZeroPadding.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
