@@ -21,7 +21,7 @@ final public class AES256CBC {
     /// returns optional encrypted string via AES-256CBC
     /// automatically generates and puts a random IV at first 16 chars
     /// the password must be exactly 32 chars long for AES-256
-    public class func encryptString(_ str: String, password: String) -> String? {
+    public class func encryptString(_ str: String, password: String, padding: Padding) -> String? {
         if !str.isEmpty && password.characters.count == 32 {
             let iv = randomText(16)
             let key = password
@@ -29,7 +29,7 @@ final public class AES256CBC {
             do {
               
               let ret = iv + str
-              let encryptedString = try aesEncrypt(ret, key: key, iv: iv)
+              let encryptedString = try aesEncrypt(ret, key: key, iv: iv, padding: padding)
               return encryptedString
             } catch let err as NSError {
                 NSLog(err.localizedDescription)
@@ -40,7 +40,7 @@ final public class AES256CBC {
 
     /// returns optional decrypted string via AES-256CBC
     /// IV need to be at first 16 chars, password must be 32 chars long
-    public class func decryptString(_ str: String, password: String) -> String? {
+    public class func decryptString(_ str: String, password: String, padding: Padding) -> String? {
         if str.characters.count > 16 && password.characters.count == 32 {
             // get AES initialization vector from first 16 chars
             let ivRange = str.startIndex..<str.index(str.startIndex, offsetBy: 16)
@@ -49,7 +49,7 @@ final public class AES256CBC {
 //                                                           options: String.CompareOptions.literal, range: nil) // remove IV
 
             do {
-                let decryptedString = try aesDecrypt(str, key: password, iv: iv)
+                let decryptedString = try aesDecrypt(str, key: password, iv: iv, padding: padding)
                 return decryptedString.replacingOccurrences(of: "\0", with: "")
             } catch let err as NSError {
                 NSLog(err.localizedDescription)
@@ -109,25 +109,24 @@ final public class AES256CBC {
     }
 
     /// returns encrypted string, IV must be 16 chars long
-    fileprivate class func aesEncrypt(_ str: String, key: String, iv: String) throws -> String {
+    fileprivate class func aesEncrypt(_ str: String, key: String, iv: String, padding: Padding) throws -> String {
         let keyData = key.data(using: String.Encoding.utf8)!
         let ivData = iv.data(using: String.Encoding.utf8)!
         let data = str.data(using: String.Encoding.utf8)!
         let enc = try Data(bytes: AESCipher(key: keyData.bytes,
-                                            iv: ivData.bytes).encrypt(bytes: data.bytes))
+                                            iv: ivData.bytes).encrypt(bytes: data.bytes, padding: padding))
         return enc.base64EncodedString(options: [])
     }
 
     /// returns decrypted string, IV must be 16 chars long
-    fileprivate class func aesDecrypt(_ str: String, key: String, iv: String) throws -> String {
+    fileprivate class func aesDecrypt(_ str: String, key: String, iv: String, padding: Padding) throws -> String {
         let keyData = key.data(using: String.Encoding.utf8)!
         let ivData = iv.data(using: String.Encoding.utf8)!
         let data = Data(base64Encoded: str)!
         let dec = try Data(bytes: AESCipher(key: keyData.bytes,
-                                            iv: ivData.bytes).decrypt(bytes: data.bytes))
+                                            iv: ivData.bytes).decrypt(bytes: data.bytes, padding: padding))
         return String(data: dec, encoding: String.Encoding.utf8)!
     }
-
 }
 
 // swiftlint:disable line_length
@@ -256,8 +255,8 @@ final private class AESCipher {
      - returns: Encrypted data
      */
 
-    func encrypt(bytes: [UInt8]) throws -> [UInt8] {
-        let finalBytes = PKCS7().add(to: bytes, blockSize: AESCipher.blockSize)
+    func encrypt(bytes: [UInt8], padding: Padding) throws -> [UInt8] {
+        let finalBytes = padding.add(to: bytes, blockSize: AESCipher.blockSize)
         let blocks = finalBytes.chunks(size: AESCipher.blockSize)
         return try blockMode.encrypt(blocks: blocks, iv: self.iv, cipherOperation: encrypt)
     }
@@ -326,13 +325,14 @@ final private class AESCipher {
         return out
     }
 
-    func decrypt(bytes: [UInt8]) throws -> [UInt8] {
+  func decrypt(bytes: [UInt8], padding: Padding) throws -> [UInt8] {
         if (bytes.count % AESCipher.blockSize) != 0 {
             throw Error.blockSizeExceeded
         }
 
-        let blocks = bytes.chunks(size: AESCipher.blockSize)
-        return try PKCS7().remove(from: blockMode.decrypt(blocks: blocks, iv: self.iv, cipherOperation: decrypt), blockSize: AESCipher.blockSize)
+        let blocks =  ZeroPadding().remove(from: bytes, blockSize: AESCipher.blockSize).chunks(size: AESCipher.blockSize)
+        return try blockMode.decrypt(blocks: blocks, iv: self.iv, cipherOperation: decrypt)
+
     }
 
     private func decrypt(block: [UInt8]) -> [UInt8]? {
@@ -601,20 +601,20 @@ private struct CBCBlockMode {
         precondition(!blocks.isEmpty)
         guard let iv = iv else {
             throw BlockError.MissingInitializationVector
+      }
+      
+      var out: [UInt8] = [UInt8]()
+      out.reserveCapacity(blocks.count * blocks[blocks.startIndex].count)
+      var prevCiphertext = iv // for the first time prevCiphertext = iv
+      for ciphertext in blocks {
+        if let decrypted = cipherOperation(ciphertext) { // decrypt
+          out.append(contentsOf: xor(prevCiphertext, decrypted))
         }
-
-        var out: [UInt8] = [UInt8]()
-        out.reserveCapacity(blocks.count * blocks[blocks.startIndex].count)
-        var prevCiphertext = iv // for the first time prevCiphertext = iv
-        for ciphertext in blocks {
-            if let decrypted = cipherOperation(ciphertext) { // decrypt
-                out.append(contentsOf: xor(prevCiphertext, decrypted))
-            }
-            prevCiphertext = ciphertext
-        }
-
-        return out
-    }
+        prevCiphertext = ciphertext
+      }
+      let decryptedBlock = out.dropFirst(AESCipher.blockSize)
+      return Array(decryptedBlock)
+  }
 }
 
 

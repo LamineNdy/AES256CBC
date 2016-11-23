@@ -23,7 +23,7 @@ class AES256CBCTests: XCTestCase {
         // encrypt. password must be 32 chars long
         let str = AES256CBC.randomText(32)
         let password = AES256CBC.randomText(32)
-        let encrypted = AES256CBC.encryptString(str, password: password)
+        let encrypted = AES256CBC.encryptString(str, password: password, padding: NoPadding())
         XCTAssertNotNil(encrypted)
         //NSLog("str: \(str)")
         //NSLog("password: \(password)")
@@ -32,7 +32,7 @@ class AES256CBCTests: XCTestCase {
         if let encrypted = encrypted {
             XCTAssertGreaterThan(encrypted.characters.count, 16)
             // decrypt
-            let decrypted = AES256CBC.decryptString(encrypted, password: password)
+            let decrypted = AES256CBC.decryptString(encrypted, password: password, padding: NoPadding())
             //NSLog("decrypted str: \(decrypted)")
             XCTAssertNotNil(decrypted)
             XCTAssertEqual(decrypted, str)
@@ -43,29 +43,29 @@ class AES256CBCTests: XCTestCase {
         // str length can vary due to padding, password must be 32 chars long
         var str = ""
         var password = ""
-        var encrypted = AES256CBC.encryptString(str, password: password)
+        var encrypted = AES256CBC.encryptString(str, password: password, padding: NoPadding())
         XCTAssertNil(encrypted)
         
         // str must be longer than 0 characters
         str = ""
         password = AES256CBC.randomText(32)
-        encrypted = AES256CBC.encryptString(str, password: password)
+        encrypted = AES256CBC.encryptString(str, password: password, padding: NoPadding())
         XCTAssertNil(encrypted)
         
         // password must be exactly 32 chars long
         str = AES256CBC.randomText(20)
         password = AES256CBC.randomText(31)
-        encrypted = AES256CBC.encryptString(str, password: password)
+        encrypted = AES256CBC.encryptString(str, password: password, padding: NoPadding())
         XCTAssertNil(encrypted)
         
         password = AES256CBC.randomText(33)
-        encrypted = AES256CBC.encryptString(str, password: password)
+        encrypted = AES256CBC.encryptString(str, password: password, padding: NoPadding())
         XCTAssertNil(encrypted)
         
         // that works, even with str length of 3 due to padding
         str = "x"
         password = AES256CBC.randomText(32)
-        encrypted = AES256CBC.encryptString(str, password: password)
+        encrypted = AES256CBC.encryptString(str, password: password, padding: NoPadding())
         XCTAssertNotNil(encrypted)
         //NSLog("str: \(str)")
         //NSLog("password: \(password)")
@@ -74,7 +74,7 @@ class AES256CBCTests: XCTestCase {
         if let encrypted = encrypted {
             XCTAssertGreaterThan(encrypted.characters.count, 16)
             // decrypt
-            let decrypted = AES256CBC.decryptString(encrypted, password: password)
+            let decrypted = AES256CBC.decryptString(encrypted, password: password, padding: NoPadding())
             XCTAssertNotNil(decrypted)
             XCTAssertEqual(decrypted, str)
         }
@@ -85,23 +85,23 @@ class AES256CBCTests: XCTestCase {
         // 16 chars are the IV. password must be 32 chars long
         var str = ""
         var password = ""
-        var decrypted = AES256CBC.decryptString(str, password: password)
+        var decrypted = AES256CBC.decryptString(str, password: password, padding: NoPadding())
         XCTAssertNil(decrypted)
         
         // str must be at least 17 chars long
         str = AES256CBC.randomText(16)
         password = AES256CBC.randomText(32)
-        decrypted = AES256CBC.decryptString(str, password: password)
+        decrypted = AES256CBC.decryptString(str, password: password, padding: NoPadding())
         XCTAssertNil(decrypted)
         
         str = AES256CBC.randomText(17)
         // password must be exactly 32 chars long
         password = AES256CBC.randomText(31)
-        decrypted = AES256CBC.decryptString(str, password: password)
+        decrypted = AES256CBC.decryptString(str, password: password, padding: NoPadding())
         XCTAssertNil(decrypted)
         
         password = AES256CBC.randomText(33)
-        decrypted = AES256CBC.decryptString(str, password: password)
+        decrypted = AES256CBC.decryptString(str, password: password, padding: NoPadding())
         XCTAssertNil(decrypted)
     }
     
